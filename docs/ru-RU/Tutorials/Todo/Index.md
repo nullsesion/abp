@@ -347,17 +347,17 @@ public async Task DeleteAsync(Guid id)
 
 ## User Interface Layer
 
-It is time to show the todo items on the UI! Before starting to write the code, it would be good to remember what we are trying to build. Here, a sample screenshot from the final UI:
+Пришло время показать задачи в пользовательском интерфейсе! Прежде чем приступить к написанию кода, было бы хорошо вспомнить, что мы пытаемся построить. Вот пример снимка экрана из окончательного пользовательского интерфейса: 
 
 ![todo-list](todo-list.png)
 
-> **We will keep the UI side minimal for this tutorial to make the tutorial simple and focused. See the [web application development tutorial](../Part-1.md) to build real-life pages with all aspects.**
+> **Мы сделаем часть пользовательского интерфейса минимальной для этого урока, чтобы сделать его простым и целенаправленным. См. [web application development tutorial](../Part-1.md) для создания реальных страниц со всеми аспектами.** 
 
 {{if UI=="MVC"}}
 
 ### Index.cshtml.cs
 
-Open the `Index.cshtml.cs` file in the `Pages` folder of the *TodoApp.Web* project and replace the content with the following code block:
+Откройте файл `Index.cshtml.cs` в папке `Pages` проекта *TodoApp.Web* и замените содержимое следующим блоком кода: 
 
 ````csharp
 using System.Collections.Generic;
@@ -384,6 +384,7 @@ namespace TodoApp.Web.Pages
 }
 ````
 
+Этот класс использует `ITodoAppService` для получения списка задач и назначения свойства `TodoItems`. Мы будем использовать его для рендеринга задач на странице razor. 
 This class uses the `ITodoAppService` to get the list of todo items and assign the the `TodoItems` property. We will use it to render the todo items on the razor page.
 
 ### Index.cshtml
@@ -429,14 +430,13 @@ Open the `Index.cshtml` file in the `Pages` folder of the *TodoApp.Web* project 
     </abp-card>
 </div>
 ````
+Мы используем [card tag helper](../../UI/AspNetCore/Tag-Helpers/Cards.md) для создания простого представления карточек. Вы можете напрямую использовать стандартную структуру начального HTML, однако ABP [tag helpers]() значительно упрощают эту задачу и делают ее безопасной.
 
-We are using ABP's [card tag helper](../../UI/AspNetCore/Tag-Helpers/Cards.md) to create a simple card view. You could directly use the standard bootstrap HTML structure, however the ABP [tag helpers]() make it much easier and type safe.
-
-This page imports a CSS and a JavaScript file, so we should also create them.
+Эта страница импортирует файлы CSS и JavaScript, поэтому мы также должны их создать. 
 
 ### Index.js
 
-Open the `Index.js` file in the `Pages` folder of the *TodoApp.Web* project and replace with the following content:
+Откройте файл `Index.js` в папке `Pages` проекта *TodoApp.Web* и замените его следующим содержимым: 
 
 ````js
 $(function () {
@@ -466,16 +466,15 @@ $(function () {
     });
 });
 ````
+В первой части мы регистрируем событие, которое при клике по иконке корзины рядом с элементами списка задач, это дейчтвие удалит связанный элемент на сервере и отобразить уведомление в пользовательском интерфейсе. Кроме того удалит удаленный элемент из DOM, благодоря этому нам не нужно обновлять страницу.
 
-In the first part, we are registering to click events of the trash icons near to the todo items, deleting the related item on the server and showing a notification on the UI. Also, we are removing the deleted item from DOM, so we don't need to refresh the page.
+Во второй части мы создаем новый элемент todo на сервере. Если это удается, мы манипулируем DOM, чтобы вставить новый элемент `<li>` в TODO LIST. Таким образом, нет необходимости обновлять всю страницу после создания нового элемента todo.
 
-In the second part, we are creating a new todo item on the server. If it succeed, we are then manipulating DOM to insert a new `<li>` element to the todo list. In this way, no need to refresh the whole page after creating a new todo item.
-
-The interesting part here is how we communicate with the server. See the *Dynamic JavaScript Proxies & Auto API Controllers* section to understand how it works. But now, let's continue and complete the application.
+Самое интересное здесь то, как мы общаемся с сервером. См. Раздел *Dynamic JavaScript Proxies & Auto API Controllers*, чтобы понять, как это работает. А теперь продолжим и заполним заявку. 
 
 ### Index.css
 
-As the final touch, open the `Index.css` file in the `Pages` folder of the *TodoApp.Web* project and replace with the following content:
+В качестве последнего штриха откройте файл `Index.css` в папке `Pages` проекта *TodoApp.Web* и замените его следующим содержимым: 
 
 ````css
 #TodoList{
@@ -504,17 +503,17 @@ As the final touch, open the `Index.css` file in the `Pages` folder of the *Todo
 }
 ````
 
-This is a simple styling for the todo page. We believe that you can do much better :)
+Это простая стилизация страницы задач. Мы уверены, что у вас получится намного лучше :)
 
-Now, you can run the application again to see the result.
+Теперь вы можете снова запустить приложение, чтобы увидеть результат. 
 
 ### Dynamic JavaScript Proxies & Auto API Controllers
 
-In the `Index.js` file, we've used `todoApp.todo.delete(...)` and `todoApp.todo.create(...)` functions to communicate with the server. These functions are dynamically created by the ABP Framework, thanks to the [Dynamic JavaScript Client Proxy](../../UI/AspNetCore/Dynamic-JavaScript-Proxies.md) system. They perform HTTP API calls to the server and return a promise, so you can register a callback to the `then` function as we've done above.
+В файле `Index.js` мы использовали функции `todoApp.todo.delete(...)` и `todoApp.todo.create(...)` для связи с сервером. Эти функции динамически создаются ABP Framework благодаря системе [Dynamic JavaScript Client Proxy](../../UI/AspNetCore/Dynamic-JavaScript-Proxies.md). Они выполняют вызовы HTTP API на сервер и возвращают promise, поэтому вы можете зарегистрировать обратный вызов для функции `then`, как мы сделали выше. 
 
-However, you may ask that we haven't created any API Controller, so how server handles these requests? This question brings us the [Auto API Controller](../../API/Auto-API-Controllers.md) feature of the ABP Framework. It automatically converts the application services to API Controllers by conventions.
+Однако вы можете спросить, что мы не создали никаких контроллеров API, так как же сервер обрабатывает эти запросы? Этот вопрос подводит нас к функции ABP Framework [Auto API Controller](../../API/Auto-API-Controllers.md). Он автоматически преобразует сервисы приложения в контроллеры API в соответствии с соглашениями. 
 
-If you open the [Swagger UI](https://swagger.io/tools/swagger-ui/) by entering the `/swagger` URL in your application, you can see the Todo API:
+Если вы откроете [Swagger UI](https://swagger.io/tools/swagger-ui/), введя URL-адрес `/swagger` в своем приложении, вы увидите Todo API: 
 
 ![todo-api](todo-api.png)
 
@@ -522,7 +521,7 @@ If you open the [Swagger UI](https://swagger.io/tools/swagger-ui/) by entering t
 
 ### Index.razor.cs
 
-Open the `Index.razor.cs` file in the `Pages` folder of the *TodoApp.Blazor* project and replace the content with the following code block:
+Откройте файл `Index.razor.cs` в папке `Pages` проекта *TodoApp.Blazor* и замените содержимое следующим блоком кода: 
 
 ````csharp
 using Microsoft.AspNetCore.Components;
@@ -561,17 +560,17 @@ namespace TodoApp.Blazor.Pages
 }
 ````
 
-This class uses the `ITodoAppService` to perform operations for the todo items. It manipulates the `TodoItems` list after create and delete operations. In this way, we don't need to refresh the whole todo list from the server.
+Этот класс использует `ITodoAppService` для выполнения операций с элементами todo. Он модифицирует список `TodoItems` после операций создания и удаления. Таким образом, нам не нужно обновлять весь список задач с сервера. 
 
 {{if UI=="Blazor"}}
 
-See the *Dynamic C# Proxies & Auto API Controllers* section below to learn how we could inject and use the application service interface from the Blazor application which is running on the browser! But now, let's continue and complete the application.
+См. Раздел *Dynamic C# Proxies & Auto API Controllers* ниже, чтобы узнать, как мы можем внедрить и использовать интерфейс службы приложения из приложения Blazor, запущенного в браузере! А теперь продолжим и заполним заявку. 
 
 {{end # Blazor}}
 
 ### Index.razor
 
-Open the `Index.razor` file in the `Pages` folder of the *TodoApp.Blazor* project and replace the content with the following code block:
+Откройте файл `Index.razor` в папке `Pages` проекта *TodoApp.Blazor* и замените содержимое следующим блоком кода: 
 
 ````xml
 @page "/"
@@ -614,7 +613,7 @@ Open the `Index.razor` file in the `Pages` folder of the *TodoApp.Blazor* projec
 
 ### Index.razor.css
 
-As the final touch, open the `Index.razor.css` file in the `Pages` folder of the *TodoApp.Web* project and replace with the following content:
+В качестве финального штриха откройте файл `Index.razor.css` в папке` Pages` проекта *TodoApp.Web* и замените его следующим содержимым: 
 
 ````css
 #TodoList{
@@ -643,21 +642,21 @@ As the final touch, open the `Index.razor.css` file in the `Pages` folder of the
 }
 ````
 
-This is a simple styling for the todo page. We believe that you can do much better :)
+Это простая стилизация страницы задач. Мы уверены, что у вас получится намного лучше :)
 
-Now, you can run the application again to see the result.
+Теперь вы можете снова запустить приложение, чтобы увидеть результат. 
 
 {{if UI=="Blazor"}}
 
-### Dynamic C# Proxies & Auto API Controllers
+### Динамические C# прокси и автоматические контроллеры API 
 
-In the `Index.razor.cs` file, we've injected (with the `[Inject]` attribute) and used the `ITodoAppService` just like using a local service. Remember that the Blazor application is running on the browser while the implementation of this application service is running on the server.
+В файл `Index.razor.cs` мы внедрили (с атрибутом `[Inject]`) и использовали `ITodoAppService` точно так же, как при использовании локальной службы. Помните, что приложение Blazor работает в браузере, в то время как реализация этой службы приложения выполняется на сервере. 
 
-The magic is done by the ABP Framework's [Dynamic C# Client Proxy](../../API/Dynamic-CSharp-API-Clients.md) system. It uses the standard `HttpClient` and performs HTTP API requests to the remote server. It also handles all the standard tasks for us, including authorization, JSON serialization and exception handling.
+Вся магия творится в системе [Dynamic C# Client Proxy](../../API/Dynamic-CSharp-API-Clients.md) платформы ABP. Он использует стандартный HttpClient и выполняет запросы HTTP API к удаленному серверу. Он также берет на себя все стандартные задачи, включая авторизацию, сериализацию JSON и обработку исключений. 
 
-However, you may ask that we haven't created any API Controller, so how server handles these requests? This question brings us the [Auto API Controller](../../API/Auto-API-Controllers.md) feature of the ABP Framework. It automatically converts the application services to API Controllers by conventions.
+Однако вы можете спросить, что мы не создали никаких контроллеров API, так как же сервер обрабатывает эти запросы? Этот вопрос подводит нас к функции ABP Framework [Auto API Controller](../../API/Auto-API-Controllers.md). Он автоматически преобразует сервисы приложения в контроллеры API в соответствии с соглашениями. 
 
-If you run the `TodoApp.HttpApi.Host` application, you can see the Todo API:
+Если вы запустите приложение `TodoApp.HttpApi.Host`, вы увидите Todo API: 
 
 ![todo-api](todo-api.png)
 
@@ -665,23 +664,23 @@ If you run the `TodoApp.HttpApi.Host` application, you can see the Todo API:
 
 {{else if UI=="NG"}}
 
-### Service Proxy Generation
+### Создание сервисного прокси 
 
-ABP provides a handy feature to automatically create client-side services to easily consume HTTP APIs provided by the server.
+ABP предоставляет удобную фичу автоматического создания клиентских сервисов, котороя позволяет легко использовать HTTP API, предоставляемые сервером. 
 
-You first need to run the `TodoApp.HttpApi.Host` project since the proxy generator reads API definitions from the server application. 
+Сначала вам нужно запустить проект `TodoApp.HttpApi.Host`, поскольку генератор прокси считывает определения API из серверного приложения. 
 
-> **Warning**: There is a problem with IIS Express; it doesn't allow to connect to the application from another process. If you are using Visual Studio, select the `TodoApp.HttpApi.Host` instead of IIS Express in the run button drop-down list, as shown in the figure below:
+> **Предупреждение**: имеется проблема с IIS Express; он не позволяет подключиться к приложению из другого процесса. Если вы используете Visual Studio, выберите `TodoApp.HttpApi.Host` вместо IIS Express в раскрывающемся списке кнопки запуска, как показано на рисунке ниже: 
 
 ![run-without-iisexpress](run-without-iisexpress.png)
 
-Once you run the `TodoApp.HttpApi.Host` project, open a command-line terminal in the `angular` folder and type the following command:
+После запуска проекта `TodoApp.HttpApi.Host` откройте терминал в папке `angular` и ввыполните следующую команду: 
 
 ````bash
 abp generate-proxy
 ````
 
-If everything goes well, it should generate an output like shown below:
+Если все пойдет хорошо, он должен сгенерировать вывод, как показано ниже: 
 
 ````bash
 CREATE src/app/proxy/generate-proxy.json (170978 bytes)
@@ -691,11 +690,11 @@ CREATE src/app/proxy/models.ts (66 bytes)
 CREATE src/app/proxy/index.ts (58 bytes)
 ````
 
-We can then use the `todoService` to use the server-side HTTP APIs, as we'll do in the next section.
+Затем мы можем использовать `todoService` для использования серверных HTTP API, как мы это сделаем в следующем разделе. 
 
 ### home.component.ts
 
-Open the `/angular/src/app/home/home.component.ts` file and replace its content with the following code block:
+Откройте файл `/angular/src/app/home/home.component.ts` и замените его содержимое следующим блоком кода: 
 
 ````js
 import { ToasterService } from '@abp/ng.theme.shared';
@@ -740,11 +739,11 @@ export class HomeComponent implements OnInit {
 
 ````
 
-We've used the `todoService` to get the list of todo items and assigned the returning value to the `todoItems` array. We've also added `create` and `delete` methods. These methods will be used in the view side.
+Мы использовали `todoService` для получения списка todoItems и присвоили возвращаемое значение массиву `todoItems`. Мы также добавили методы `create` и `delete`. Эти методы будут использоваться на стороне клиента. 
 
 ### home.component.html
 
-Open the `/angular/src/app/home/home.component.html` file and replace its content with the following code block:
+Откройте файл `/angular/src/app/home/home.component.html` и замените его содержимое следующим блоком кода: 
 
 ````html
 <div class="container">
@@ -778,7 +777,7 @@ Open the `/angular/src/app/home/home.component.html` file and replace its conten
 
 ### home.component.scss
 
-As the final touch, open the `/angular/src/app/home/home.component.scss` file and replace its content with the following code block:
+В качестве финального штриха откройте файл `/angular/src/app/home/home.component.scss` и замените его следующим содержимым: 
 
 ````css
 #TodoList{
@@ -807,20 +806,20 @@ As the final touch, open the `/angular/src/app/home/home.component.scss` file an
 }
 ````
 
-This is a simple styling for the todo page. We believe that you can do much better :)
+Это простая стилизация страницы задач. Мы уверены, что у вас получится намного лучше :)
 
-Now, you can run the application again to see the result.
+Теперь вы можете снова запустить приложение, чтобы увидеть результат. 
 
 {{end}}
 
-## Conclusion
+## Заключение 
 
-In this tutorial, we've build a very simple application to warm up to the ABP Framework. If you are looking to build a serious application, please check the [web application development tutorial](../Part-1.md) which covers all the aspects of a real-life web application development.
+В этом руководстве мы создали очень простое приложение для знакомства с ABP Framework. Если вы хотите создать серьезное приложение, ознакомьтесь с [web application development tutorial](../Part-1.md), которое охватывает все аспекты разработки реальных веб-приложений. 
 
-## Source Code
+## Исходный код 
 
-You can find source code of the completed application [here](https://github.com/abpframework/abp-samples/tree/master/TodoApp).
+Вы можете найти исходный код готового приложения [здесь](https://github.com/abpframework/abp-samples/tree/master/TodoApp).
 
-## See Also
+## Смотри также
 
 * [Web Application Development Tutorial](../Part-1.md)
