@@ -220,90 +220,89 @@ ABP - это модульный фреймворк с идеальным диз�
 
 Установите `.Web` в качестве запускаемого проекта и запустите приложение. Имя пользователя по умолчанию - `admin`, пароль - `1q2w3E*`. 
 
-See [Getting Started With the ASP.NET Core MVC Template](../Getting-Started-AspNetCore-MVC-Template.md) for more information.
+Смотрите более подробно [Getting Started With the ASP.NET Core MVC Template](../Getting-Started-AspNetCore-MVC-Template.md).
 
-### Tiered Structure
+### Многоуровневая/Многослойная структура 
 
-If you have selected the ASP.NET Core UI and specified the `--tiered` option, the solution created will be a tiered solution. The purpose of the tiered structure is to be able to **deploy Web application and HTTP API to different servers**:
+Если вы выбрали пользовательский интерфейс ASP.NET Core и указали параметр --tiered, созданное решение будет многоуровневым. Назначение многоуровневой структуры - иметь возможность **развертывать веб-приложение и HTTP API на разных серверах**: 
 
 ![bookstore-visual-studio-solution-v3](../images/tiered-solution-servers.png)
 
-* Browser runs your UI by executing HTML, CSS & JavaScript.
-* Web servers hosts static UI files (CSS, JavaScript, image... etc.) & dynamic components (e.g. Razor pages). It performs HTTP requests to the API server to execute the business logic of the application.
-* API Server hosts the HTTP APIs which then use application & domain layers of the application to perform the business logic.
-* Finally, database server hosts your database.
+* Браузер отображает ваш пользовательский интерфейс, выполняя HTML, CSS и JavaScript.
+* Веб-сервер содержат статические файлы пользовательского интерфейса (CSS, JavaScript, изображения и т. Д.) И динамические компоненты (например, страницы Razor). Он выполняет HTTP-запросы к серверу API для выполнения бизнес-логики приложения.
+* Сервер API содержит HTTP API, которые затем используют уровни приложения и домена приложения для выполнения бизнес-логики.
+* Наконец, сервер баз данных размещает вашу базу данных. 
 
-So, the resulting solution allows a 4-tiered deployment, by comparing to 3-tiered deployment of the default structure explained before.
+Таким образом, получившееся решение допускает четырехуровневое развертывание по сравнению с трехуровневым развертыванием структуры по умолчанию, описанной ранее. 
 
-> Unless you actually need to such a 4-tiered deployment, its suggested to go with the default structure which is simpler to develop, deploy and maintain.
+> Если вам действительно не нужно такое четырехуровневое развертывание, рекомендуется использовать структуру по умолчанию, которую проще разрабатывать, развертывать и поддерживать. 
 
-The solution structure is shown below:
+Структура решения показана ниже: 
 
 ![bookstore-visual-studio-solution-v3](../images/bookstore-visual-studio-solution-tiered.png)
 
-As different from the default structure, two new projects come into play: `.IdentityServer` & `.HttpApi.Host`.
+В отличие от структуры по умолчанию, в игру вступают два новых проекта: `.IdentityServer` и `.HttpApi.Host`.
 
 #### Проект .IdentityServer
 
-This project is used as an authentication server for other projects. `.Web` project uses OpenId Connect Authentication to get identity and access tokens for the current user from the IdentityServer. Then uses the access token to call the HTTP API server. HTTP API server uses bearer token authentication to obtain claims from the access token to authorize the current user.
+Этот проект используется в качестве сервера аутентификации для других проектов. Проект `.Web` использует аутентификацию OpenId Connect для получения идентификаторов и токенов доступа для текущего пользователя с IdentityServer. Затем использует токен доступа для вызова HTTP API-сервера. Сервер HTTP API использует аутентификацию токена-носителя для получения утверждений от токена доступа для авторизации текущего пользователя. 
 
 ![tiered-solution-applications](../images/tiered-solution-applications.png)
 
-ABP uses the open source [IdentityServer4](https://identityserver.io/) framework for the authentication between applications. See [IdentityServer4 documentation](http://docs.identityserver.io) for details about the IdentityServer4 and OpenID Connect protocol.
+ABP использует платформу [IdentityServer4](https://identityserver.io/) с открытым исходным кодом для аутентификации между приложениями. См. [Документацию IdentityServer4](http://docs.identityserver.io) для получения подробной информации о протоколе IdentityServer4 и OpenID Connect. 
 
-It has its own `appsettings.json` that contains database connection and other configurations.
+У него есть собственный `appsettings.json`, который содержит соединение с базой данных и другие конфигурации. 
 
 #### Проект .HttpApi.Host
 
-This project is an application that hosts the API of the solution. It has its own `appsettings.json` that contains database connection and other configurations.
+Этот проект представляет собой приложение, в котором размещен API решения. У него есть собственный `appsettings.json`, который содержит соединение с базой данных и другие конфигурации. 
 
 #### Проект .Web
 
-Just like the default structure, this project contains the User Interface (UI) of the application. It contains razor pages, JavaScript files, style files, images and so on...
+Как и структура по умолчанию, этот проект содержит пользовательский интерфейс (UI) приложения. Он содержит razor страницы, файлы JavaScript, файлы стилей, изображения и т. Д. 
 
-This project contains an `appsettings.json` file, but this time it does not have a connection string because it never connects to the database. Instead, it mainly contains endpoint of the remote API server and the authentication server.
+Этот проект содержит файл `appsettings.json`, но на этот раз у него нет строки подключения, потому что он никогда не подключается к базе данных. Вместо этого он в основном содержит конечную точку удаленного сервера API и сервера аутентификации. 
 
-#### Pre-requirements
+#### Предварительные требования 
 
-* [Redis](https://redis.io/): The applications use Redis as as distributed cache. So, you need to have Redis installed & running.
+* [Redis](https://redis.io/): Приложения используют Redis как распределенный кеш. Вам необходимо установить и запустить Redis. 
 
-#### How to Run?
+#### Как запустить? 
 
-You should run the application with the given order:
+Вы должны запустить приложение в указанном порядке:
 
-* First, run the `.IdentityServer` since other applications depends on it.
-* Then run the `.HttpApi.Host` since it is used by the `.Web` application.
-* Finally, you can run the `.Web` project and login to the application (using `admin` as the username and `1q2w3E*` as the password).
+* Сначала запустите `.IdentityServer`, так как от него зависят другие приложения.
+* Затем запустите `.HttpApi.Host`, поскольку он используется приложением` .Web`.
+* Наконец, вы можете запустить проект `.Web` и войти в приложение (используя `admin` в качестве имени пользователя и `1q2w3E*` в качестве пароля). 
 
 ### Angular UI
 
-If you choose `Angular` as the UI framework (using the `-u angular` option), the solution is being separated into two folders:
+Если вы выберете `Angular` в качестве UI-фреймворка (используя параметр `-u angular`), решение будет разделено на две папки: 
 
-* `angular` folder contains the Angular UI application, the client-side code.
-* `aspnet-core` folder contains the ASP.NET Core solution, the server-side code.
+* `angular` Папка содержит приложение Angular UI, клиентский код для браузера. 
+* `aspnet-core` папка содержит решение ASP.NET Core, бекенд.
 
-The server-side is similar to the solution described above. `*.HttpApi.Host` project serves the API, so the `Angular` application consumes it.
+На стороне сервера аналогично описанному выше решению. Проект `*.HttpApi.Host` обслуживает API, а приложение` Angular` использует его.
 
-Angular application folder structure looks like below:
+Структура папок приложения Angular выглядит следующим образом: 
 
 ![angular-folder-structure](../images/angular-folder-structure.png)
 
-
-Each of ABP Commercial modules is an NPM package. Some ABP modules are added as a dependency in `package.json`. These modules install with their dependencies. To see all ABP packages, you can run the following command in the `angular` folder:
+Каждый из коммерческих модулей ABP представляет собой пакет NPM. Некоторые модули ABP добавляются как зависимость в `package.json`. Эти модули устанавливаются вместе со своими зависимостями. Чтобы увидеть все пакеты ABP, вы можете запустить следующую команду в папке `angular`: 
 
 ```bash
 yarn list --pattern abp
 ```
 
-Angular application module structure:
+Структура модуля Angular приложения: 
 
 ![Angular template structure diagram](../images/angular-template-structure-diagram.png)
 
 #### AppModule
 
-`AppModule` is the root module of the application. Some of ABP modules and some essential modules imported to the `AppModule`.
+`AppModule` - корневой модуль приложения. Некоторые из модулей ABP и некоторые важные модули импортированы в `AppModule`. 
 
-ABP Config modules also have imported to `AppModule`  for initially requirements of lazy-loadable ABP modules.
+ABP Config modules также были импортированы в `AppModule` и могут быть инициализированны с помощью lazy-loadable ABP modules. 
 
 #### AppRoutingModule
 
