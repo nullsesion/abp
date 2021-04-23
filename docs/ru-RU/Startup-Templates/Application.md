@@ -87,7 +87,7 @@ abp new Acme.BookStore -m react-native
 
 Каждый раздел ниже объясняет связанный проект и его зависимости.
 
-#### Проект .Domain.Shared
+#### Слой/Проект .Domain.Shared
 
 Этот проект содержит константы, перечисления и другие объекты, которые на самом деле являются частью уровня домена, но должны использоваться всеми слоями/проектами в решении.
 
@@ -95,7 +95,7 @@ abp new Acme.BookStore -m react-native
 
 * Этот проект не зависит от других проектов в решении. Все остальные проекты прямо или косвенно зависят от этого.
 
-#### Проект .Domain
+#### Слой/Проект .Domain
 
 Это доменный слой решения. В основном он содержит [entities, aggregate roots](../Entities.md), [службы домена] (../ Domain-Services.md), [domain services](../Domain-Services.md), [value objects](../Value-Objects.md), [repository interfaces](../Repositories.md) и другие объекты домена.
 
@@ -103,7 +103,7 @@ abp new Acme.BookStore -m react-native
 
 * Зависит от `.Domain.Shared`, потому что он использует константы, перечисления и другие объекты, определенные в этом проекте.
 
-#### Проект .Application.Contracts
+#### Слой/Проект .Application.Contracts
 
 Этот проект в основном содержит [application service](../Application-Services.md) **интерфейсы** и [Data Transfer Objects](../Data-Transfer-Objects.md) (DTO) уровня приложения. Он существует для разделения интерфейса и реализации прикладного уровня. Таким образом, проект интерфейса может быть предоставлен клиентам как пакет контракта.
 
@@ -111,7 +111,7 @@ abp new Acme.BookStore -m react-native
 
 * Зависит от `.Domain.Shared`, потому что он может использовать константы, перечисления и другие общие объекты этого проекта в интерфейсах служб приложений и DTO.
 
-#### Проект .Application
+#### Слой/Проект .Application
 
 Данный проект [application service](../Application-Services.md) **Имплементирует** интерфейсы определенных в проекте `.Application.Contracts`.
 
@@ -121,7 +121,7 @@ abp new Acme.BookStore -m react-native
 
 * Зависит от проекта `.Domain`, чтобы иметь возможность использовать объекты домена (сущности, интерфейсы репозитория ... и т. Д.) Для выполнения логики приложения.
 
-#### Проект .EntityFrameworkCore
+#### Слой/Проект .EntityFrameworkCore
 
 Это проект интеграции с EF Core. Он определяет `DbContext` и реализует интерфейсы репозитория, определенные в проекте .Domain.
 
@@ -129,7 +129,7 @@ abp new Acme.BookStore -m react-native
 
 >Этот проект доступен, только если вы используете EF Core в качестве поставщика базы данных. Если вы выберете другого поставщика базы данных, его имя будет другим.
 
-#### Проект .EntityFrameworkCore.DbMigrations
+#### Слой/Проект .EntityFrameworkCore.DbMigrations
 
 Содержит миграции базы данных EF Core для решения. Он имеет отдельный `DbContext`, предназначенный для управления миграциями.
 
@@ -143,7 +143,7 @@ ABP - это модульный фреймворк с идеальным диз�
 >
 > Смотрите [Entity Framework Core Migrations Guide](../Entity-Framework-Core-Migrations.md), чтобы понять этот проект более подробно.
 
-#### Проект .DbMigrator 
+#### Слой/Проект .DbMigrator 
 
 Это консольное приложение, которое упрощает выполнение миграции базы данных в средах разработки и на боевом сервере. Когда вы запускаете это приложение, оно;
 
@@ -160,65 +160,65 @@ ABP - это модульный фреймворк с идеальным диз�
 * Зависит от `.EntityFrameworkCore.DbMigrations` проекта (для EF Core), поскольку ему требуется доступ к миграциям.
 * Зависит от проекта `.Application.Contracts`, чтобы иметь возможность доступа к определениям разрешений, поскольку начальная инициализация данных требует разрешения в качестве роли администратора.
 
-#### Проект .HttpApi
+#### Слой/Проект .HttpApi
 
-This project is used to define your API Controllers.
+Этот проект используется для определения ваших контроллеров API. 
 
-Most of time you don't need to manually define API Controllers since ABP's [Auto API Controllers](../API/Auto-API-Controllers.md) feature creates them automagically based on your application layer. However, in case of you need to write API controllers, this is the best place to do it.
+В большинстве случаев вам не нужно вручную определять контроллеры API, поскольку функция ABP [Auto API Controllers](../API/Auto-API-Controllers.md) создает их автоматически на основе слоя Application вашего приложения. Однако, если вам нужно написать контроллеры API, это лучшее место для этого. 
 
-* Depends on the `.Application.Contracts` project to be able to inject the application service interfaces.
+* Зависит от проекта `.Application.Contracts`, чтобы иметь возможность внедрять интерфейсы служб приложения. 
 
-#### Проект .HttpApi.Client
+#### Слой/Проект .HttpApi.Client
 
-This is a project that defines C# client proxies to use the HTTP APIs of the solution. You can share this library to 3rd-party clients, so they can easily consume your HTTP APIs in their Dotnet applications (For other type of applications, they can still use your APIs, either manually or using a tool in their own platform)
+Это проект, который определяет клиентские прокси C# для использования HTTP API решения. Вы можете поделиться этой библиотекой со сторонними клиентами, чтобы они могли легко использовать ваши HTTP API в своих приложениях Dotnet (для других типов приложений они по-прежнему могут использовать ваши API вручную или с помощью инструмента на своей собственной платформе) 
 
-Most of time you don't need to manually create C# client proxies, thanks to ABP's [Dynamic C# API Clients](../API/Dynamic-CSharp-API-Clients.md) feature.
+В большинстве случаев вам не нужно вручную создавать клиентские прокси на C# благодаря функции ABP [Dynamic C# API Clients](../API/Dynamic-CSharp-API-Clients.md). 
 
-`.HttpApi.Client.ConsoleTestApp` project is a console application created to demonstrate the usage of the client proxies.
+Проект `.HttpApi.Client.ConsoleTestApp` - это консольное приложение, созданное для демонстрации использования клиентских прокси. 
 
-* Depends on the `.Application.Contracts` project to be able to share the same application service interfaces and DTOs with the remote service.
+* Зависит от проекта `.Application.Contracts`, чтобы иметь возможность совместно использовать одни и те же интерфейсы служб приложений и DTO с удаленной службой. 
 
-> You can delete this project & dependencies if you don't need to create C# client proxies for your APIs.
+> Вы можете удалить этот проект и зависимости, если вам не нужно создавать клиентские прокси C# для ваших API. 
 
 #### Проект .Web
 
-This project contains the User Interface (UI) of the application if you are using ASP.NET Core MVC UI. It contains Razor pages, JavaScript files, CSS files, images and so on...
+Этот проект содержит пользовательский интерфейс (UI) приложения, если вы используете пользовательский интерфейс ASP.NET Core MVC. Он содержит страницы Razor, файлы JavaScript, файлы CSS, изображения и так далее ... 
 
-This project contains the main `appsettings.json` file that contains the connection string and other configuration of the application.
+Этот проект содержит основной файл `appsettings.json`, который содержит строку подключения и другую конфигурацию приложения. 
 
-* Depends on the `.HttpApi` since UI layer needs to use APIs and application service interfaces of the solution.
+* Зависит от `.HttpApi`, поскольку слой пользовательского интерфейса должен использовать API и интерфейсы служб приложений решения. 
 
-> If you check the source code of the `.Web.csproj` file, you will see the references to the `.Application` and the `.EntityFrameworkCore.DbMigrations` projects.
+> Если вы проверите исходный код файла `.Web.csproj`, вы увидите ссылки на проекты` .Application` и `.EntityFrameworkCore.DbMigrations`. 
 >
-> These references are actually not needed while coding your UI layer, because UI layer normally doesn't depend on the EF Core or the Application layer's implementation. This startup templates are ready for the tiered deployment, where API layer is hosted in a separate server than the UI layer.
+> Эти ссылки на самом деле не нужны при кодировании слоя пользовательского интерфейса, поскольку уровень пользовательского интерфейса обычно не зависит от реализации EF Core или слоя приложения. Эти стартовые шаблоны готовы для раздельного развертывания, когда когда API размещается на отдельном сервере, а не на совместно со слоем пользовательского интерфейса. 
 >
-> However, if you don't choose the `--tiered` option, these references will be in the .Web project to be able to host the Web, API and application layers in a single application endpoint.
+> Однако, если вы не укажете опцию `--tiered`, эти ссылки будут в проекте .Web, чтобы иметь возможность размещать веб-слои, API и уровни приложений в одной конечной точке приложения. 
 >
-> This gives you to ability to use domain entities & repositories in your presentation layer. However, this is considered as a bad practice according to the DDD.
+> Это дает вам возможность использовать объекты домена и репозитории на уровне представления. Хотя и согласно DDD, это считается плохой практикой. 
 
-#### Проект Test
+#### Проекты Test
 
-The solution has multiple test projects, one for each layer:
+В решении есть несколько тестовых проектов, по одному для каждого слоя: 
 
-* `.Domain.Tests` is used to test the domain layer.
-* `.Application.Tests` is used to test the application layer.
-* `.EntityFrameworkCore.Tests` is used to test EF Core configuration and custom repositories.
-* `.Web.Tests` is used to test the UI (if you are using ASP.NET Core MVC UI).
-* `.TestBase` is a base (shared) project for all tests.
+* `.Domain.Tests` используется для тестирования слоя домена.
+* `.Application.Tests` используется для тестирования слоя приложения.
+* `.EntityFrameworkCore.Tests` используется для тестирования конфигурации EF Core и настраиваемых репозиториев.
+* `.Web.Tests` используется для тестирования пользовательского интерфейса (если вы используете пользовательский интерфейс ASP.NET Core MVC).
+* `.TestBase` - это базовый (общий) проект для всех тестов. 
 
-In addition, `.HttpApi.Client.ConsoleTestApp` is a console application (not an automated test project) which demonstrate the usage of HTTP APIs from a .NET application.
+Кроме того, `.HttpApi.Client.ConsoleTestApp` - это консольное приложение (не автоматизированный тестовый проект), демонстрирующее использование HTTP API из приложения .NET. 
 
-Test projects are prepared for integration testing;
+Тестовые проекты подготовлены к интеграционному тестированию;
 
-* It is fully integrated to ABP framework and all services in your application.
-* It uses SQLite in-memory database for EF Core. For MongoDB, it uses the [Mongo2Go](https://github.com/Mongo2Go/Mongo2Go) library.
-* Authorization is disabled, so any application service can be easily used in tests.
+* Они полностью интегрирован в структуру ABP и все службы в вашем приложении.
+* Они использует базу данных SQLite в памяти для EF Core. Для MongoDB используется библиотека [Mongo2Go](https://github.com/Mongo2Go/Mongo2Go).
+* Авторизация отключена, поэтому любое приложение-сервис можно легко использовать в тестах. 
 
-You can still create unit tests for your classes which will be harder to write (because you will need to prepare mock/fake objects), but faster to run (because it only tests a single class and skips all initialization process).
+Вы по-прежнему можете создавать модульные тесты для своих классов, которые будет сложнее написать (потому что вам нужно будет подготовить mock/fake объекты), но быстрее запустить (потому что он тестирует только один класс и пропускает весь процесс инициализации). 
 
-#### How to Run?
+#### Как запустить? 
 
-Set `.Web` as the startup project and run the application. Default username is `admin` and password is `1q2w3E*`.
+Установите `.Web` в качестве запускаемого проекта и запустите приложение. Имя пользователя по умолчанию - `admin`, пароль - `1q2w3E*`. 
 
 See [Getting Started With the ASP.NET Core MVC Template](../Getting-Started-AspNetCore-MVC-Template.md) for more information.
 
