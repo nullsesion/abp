@@ -306,11 +306,11 @@ ABP Config modules также были импортированы в `AppModule`
 
 #### AppRoutingModule
 
-There are lazy-loadable ABP modules in the `AppRoutingModule` as routes.
+В AppRoutingModule есть лениво загрузка ABP модулей в виде маршрутов. 
 
-> Paths of ABP Modules should not be changed.
+> Пути модулей ABP не изменены.
 
-You should add `routes` property in the `data` object to add a link on the menu to redirect to your custom pages.
+Вы должны добавить свойство `routes` в объект` data`, чтобы добавить в меню ссылку для перенаправления на ваши пользовательские страницы. 
 
 ```js
 {
@@ -327,135 +327,135 @@ You should add `routes` property in the `data` object to add a link on the menu 
    }
 }
 ```
-In the above example;
-*  If the user is not logged in, AuthGuard blocks access and redirects to the login page.
-*  PermissionGuard checks the user's permission with `requiredPolicy` property of the `rotues` object. If the user is not authorized to access the page, the 403 page appears.
-*  `name` property of `routes` is the menu link label. A localization key can be defined .
-*  `iconClass` property of `routes` object is the menu link icon class.
-*  `requiredPolicy` property of `routes` object is the required policy key to access the page.
+В приведенном выше примере; 
+*  Если пользователь не вошел в систему, AuthGuard блокирует доступ и перенаправляет на страницу входа. 
+*  PermissionGuard проверяет права пользователя с помощью свойства `requiredPolicy` объекта `rotues`. Если пользователь не авторизован для доступа к странице, отобразится страница 403. 
+*  Свойство `name` для` routes` является текстом меткой меню и может использоватся в качестве ключа при локализации.
+*  Свойство `iconClass` объекта` routes` является классом задающим иконку меню
+*  Свойство `requiredPolicy` объекта` routes` является обязательным ключом политики для доступа к странице. 
 
-After the above `routes` definition, if the user is authorized, the dashboard link will appear on the menu.
+После указанного выше определения `routes`, если пользователь авторизован, в dashboard отобразится соответствующая ссылка меню. 
 
 #### Shared Module
 
-The modules that may be required for all modules have imported to the `SharedModule`. You should import the `SharedModule` to all modules.
+Модули, функционал которых могут потребоваться для всех модулей, импортированы в `SharedModule`. Вы должны импортировать `SharedModule` во все модули. 
 
-See the [Sharing Modules](https://angular.io/guide/sharing-ngmodules) document.
+Смотри [Sharing Modules](https://angular.io/guide/sharing-ngmodules).
 
 #### Environments
 
-The files under the `src/environments` folder has the essential configuration of the application.
+Файлы в папке `src/environments` содержат конфигурацию среды исполнения приложения. 
 
 #### Home Module
 
-Home module is an example lazy-loadable module that loads on the root address of the application.
+Home module это пример модуля с отложенной загрузкой, который загружается при обращении по корневому адресу приложения
 
 #### Styles
 
-The required style files added to `styles` array in the `angular.json`. `AppComponent` loads some style files lazily via `LazyLoadService` after the main bundle is loaded to shorten the first rendering time.
+Необходимые файлы стилей добавлены в массив `styles` в `angular.json`. `AppComponent` лениво загружает только некоторые файлы стилей через  `LazyLoadService` после загрузки основного пакета, чтобы сократить время первого рендеринга. 
 
-#### Testing
+#### Тестирование 
 
-You should create your tests in the same folder as the file file you want to test.
+Вы должны создавать свои тесты в той же папке, что и файл, который вы хотите тестировать. 
 
-See the [testing document](https://angular.io/guide/testing).
+Смотри [testing document](https://angular.io/guide/testing).
 
-#### Depended Packages
+#### Зависимые пакеты 
 
-* [NG Bootstrap](https://ng-bootstrap.github.io/) is used as UI component library.
-* [NGXS](https://www.ngxs.io/) is used as state management library.
-* [angular-oauth2-oidc](https://github.com/manfredsteyer/angular-oauth2-oidc) is used to support for OAuth 2 and OpenId Connect (OIDC).
-* [Chart.js](https://www.chartjs.org/) is used to create widgets.
-* [ngx-validate](https://github.com/ng-turkey/ngx-validate) is used for dynamic validation of reactive forms.
+* [NG Bootstrap](https://ng-bootstrap.github.io/) используется как библиотека компонентов пользовательского интерфейса. 
+* [NGXS](https://www.ngxs.io/) используется как библиотека предсказуемого состояния контейнера.
+* [angular-oauth2-oidc](https://github.com/manfredsteyer/angular-oauth2-oidc) используется для поддержки OAuth 2 и OpenId Connect (OIDC) .
+* [Chart.js](https://www.chartjs.org/) используется для создания виджетов. 
+* [ngx-validate](https://github.com/ng-turkey/ngx-validate) используется для динамической проверки реактивных форм. 
 
 ### React Native
 
-if `-m react-native` option is spesified in new project command, the solution includes the [React Native](https://reactnative.dev/) application in the `react-native` folder.
+если при создании нового проекта будет указана опция `-m react-native`, решение будет включать в себя приложение [React Native](https://reactnative.dev/) в папке `react-native`.
 
-The server-side is similar to the solution described above. `*.HttpApi.Host` project serves the API, so the React Native application consumes it.
+На стороне сервера аналогично описанному выше решению. Проект `* .HttpApi.Host` обслуживает API, поэтому приложение React Native будет использовать его.
 
-The React Native application was generated with [Expo](https://expo.io/). Expo is a set of tools built around React Native to help you quickly start an app and, while it has many features.
+Приложение React Native было создано с помощью [Expo](https://expo.io/). Expo - это набор инструментов, созданных на основе React Native, которые помогут вам быстро запустить приложение со множеством функций.
 
-React Native application folder structure as like below:
+Структура папок приложения React Native, как показано ниже: 
 
 ![react-native-folder-structure](../images/react-native-folder-structure.png)
 
-* `App.js` is bootstrap component of the application.
-* `Environment.js` file has the essential configuration of the application. `prod` and `dev` configurations defined in this file. 
-* [Contexts](https://reactjs.org/docs/context.html) are created in the `src/contexts` folder.
-* [Higher order components](https://reactjs.org/docs/higher-order-components.html) are created in the`src/hocs` folder.
-* [Custom hooks](https://reactjs.org/docs/hooks-custom.html#extracting-a-custom-hook) are created in the`src/hooks`.
-* [Axios interceptors](https://github.com/axios/axios#interceptors) are created in the `src/interceptors` folder.
-* Utility functions are exported from `src/utils` folder.
+* `App.js` является загрузочным компонентом приложения.
+* `Environment.js` этот файл содердит `prod` и `dev` конфигурации приложения. 
+* [Contexts](https://reactjs.org/docs/context.html) создаются в папке `src/contexts`.
+* [Higher order components](https://reactjs.org/docs/higher-order-components.html) создаются в папке `src/hocs`.
+* [Custom hooks](https://reactjs.org/docs/hooks-custom.html#extracting-a-custom-hook) создаются в папке `src/hooks`.
+* [Axios interceptors](https://github.com/axios/axios#interceptors) создаются в папке `src/interceptors`.
+* Служебные функции экспортируются из папки `src/utils`.
 
 #### Components
 
-Components that can be used on all screens are created in the `src/components` folder. All components have created as a function that able to use [hooks](https://reactjs.org/docs/hooks-intro.html).
+Компоненты, которые можно использовать на всех экранах, создаются в папке `src/components`. Все компоненты созданы как функции, которые могут использовать [hooks](https://reactjs.org/docs/hooks-intro.html).
 
 #### Screens
 
 ![react-native-navigation-structure](../images/react-native-navigation-structure.png)
 
-Screens are created by creating folders that separate their names in the `src/screens` folder. Certain parts of some screens can be split into components.
+Экраны создаются путем создания папок, разделяющих их имена в папке `src/screens`. Определенные части некоторых экранов можно разделить на компоненты.
 
-Each screen is used in a navigator in the `src/navigators` folder.
+Каждый экран используется в навигаторе в папке `src/navigators`. 
 
 #### Navigation
 
-[React Navigation](https://reactnavigation.org/) is used as a navigation library. Navigators are created in the `src/navigators`. A [drawer](https://reactnavigation.org/docs/drawer-based-navigation/) navigator and several [stack](https://reactnavigation.org/docs/hello-react-navigation/#installing-the-stack-navigator-library) navigators have created in this folder. See the [above diagram](#screens) for navigation structure.
+[React Navigation](https://reactnavigation.org/) используется как библиотека навигации. Навигаторы создаются в `src/navigators`.[drawer](https://reactnavigation.org/docs/drawer-based-navigation/) навигатор и несколько [stack](https://reactnavigation.org/docs/hello-react-navigation/#installing-the-stack-navigator-library) в этой папке созданы навигаторы. См. [above diagram](#screens) для структуры навигации.
 
-#### State Management
+#### Менаджер состояний
 
-[Redux](https://redux.js.org/) is used as state management library. [Redux Toolkit](https://redux-toolkit.js.org/) library is used as a toolset for efficient Redux development.
+[Redux](https://redux.js.org/) используется как менеджер состояний. [Redux Toolkit](https://redux-toolkit.js.org/) библиотека используется как набор инструментов для эффективной разработки с Redux. 
 
-Actions, reducers, sagas, selectors are created in the `src/store` folder. Store folder as like below:
+Действия, редукторы, саги, селекторы создаются в папке `src/store`. папка хранилища, описана ниже: 
 
 ![react-native-store-folder](../images/react-native-store-folder.png)
 
-* [**Store**](https://redux.js.org/basics/store) is defined in the `src/store/index.js` file.
-* [**Actions**](https://redux.js.org/basics/actions/) are payloads of information that send data from your application to your store.
-* [**Reducers**](https://redux.js.org/basics/reducers) specify how the application's state changes in response to actions sent to the store. 
-* [**Redux-Saga**](https://redux-saga.js.org/) is a library that aims to make application side effects (i.e. asynchronous things like data fetching and impure things like accessing the browser cache) easier to manage. Sagas are created in the `src/store/sagas` folder.
-* [**Reselect**](https://github.com/reduxjs/reselect) library is used to create memoized selectors. Selectors are created in the `src/store/selectors` folder.
+* [**Store**](https://redux.js.org/basics/store) определяется в файле `src/store/index.js`.
+* [**Actions**](https://redux.js.org/basics/actions/) это структуры, которые передают данные из вашего приложения в хранилище.
+* [**Reducers**](https://redux.js.org/basics/reducers) указывают, как изменяется состояние приложения в ответ на действия, отправленные в хранилище. 
+* [**Redux-Saga**](https://redux-saga.js.org/)  это библиотека нацеленная делать сайд-эффекты проще и лучше путем работы с сагами (т.е. асинхронные вызовы работа с промежуточными результатами или кешем браузера). Саги создаются в папке `src/store/sagas`.
+* [**Reselect**](https://github.com/reduxjs/reselect)  это библиотека используется для создания мемоизированных селекторов (memoized selectors). Создаются в папке `src/store/selectors`.
 
 #### APIs
 
-[Axios](https://github.com/axios/axios) is used as an HTTP client library. An Axios instance has exported from  `src/api/API.js` file to make HTTP calls with the same config. `src/api` folder also has the API files that have been created for API calls.
+[Axios](https://github.com/axios/axios)  это библиотека используется как HTTP клиент. Экземпляр Axios экспортирован из файла `src/api/API.js` для выполнения HTTP-вызовов. В папке `src/api` есть файлы API, созданные для вызовов API.
 
 #### Theming
 
-[Native Base](https://nativebase.io/) is used as UI components library. Native Base components can customize easily. See the [Native Base customize](https://docs.nativebase.io/Customize.html#Customize) documentation. We followed the same way.
-
-* Native Base theme variables are in the `src/theme/variables` folder.
-* Native Base component styles are in the `src/theme/components` folder. These files have been generated with Native Base's `ejectTheme` script.
-* Styles of components override with the files under the `src/theme/overrides` folder.
+[Native Base](https://nativebase.io/) используется как библиотека компонентов пользовательского интерфейса. Компоненты Native Base можно легко настроить. См. Документацию [Native Base customize](https://docs.nativebase.io/Customize.html#Customize).  Мы пошли по тому же пути. 
+ 
+* Native Base переменные темы находятся в папке `src/theme/variables`.
+* Native Base Стили компонентов находятся в папке `src/theme/components`. Эти файлы были созданы с помощью сценария Native Base's `ejectTheme`.
+* Стили компонентов могут перекрыватся файлами в папке `src/theme/overrides`.
 
 #### Testing
 
-Unit tests will be created.
+Будут созданы юнит-тесты. 
 
-See the [Testing Overview](https://reactjs.org/docs/testing.html) document.
+Смотри [Testing Overview](https://reactjs.org/docs/testing.html).
 
-#### Depended Libraries
+#### Зависимые библиотеки
 
-* [Native Base](https://nativebase.io/) is used as UI components library.
-* [React Navigation](https://reactnavigation.org/) is used as navigation library.
-* [Axios](https://github.com/axios/axios) is used as HTTP client library.
-* [Redux](https://redux.js.org/) is used as state management library.
-* [Redux Toolkit](https://redux-toolkit.js.org/) library is used as a toolset for efficient Redux development.
-* [Redux-Saga](https://redux-saga.js.org/) is used to manage asynchronous processes.
-* [Redux Persist](https://github.com/rt2zz/redux-persist) is used as state persistance.
-* [Reselect](https://github.com/reduxjs/reselect) is used to create memoized selectors.
-* [i18n-js](https://github.com/fnando/i18n-js) is used as i18n library.
-* [expo-font](https://docs.expo.io/versions/latest/sdk/font/) library allows loading fonts easily.
-* [Formik](https://github.com/jaredpalmer/formik) is used to build forms.
-* [Yup](https://github.com/jquense/yup) is used for form validations.
+* [Native Base](https://nativebase.io/) используется в качестве библиотеки компонентов пользовательского интерфейса.
+* [React Navigation](https://reactnavigation.org/) используется в качестве библиотеки навигации.
+* [Axios](https://github.com/axios/axios) это библиотека используется как HTTP клиент.
+* [Redux](https://redux.js.org/) используется как библиотека управления состоянием.
+* [Redux Toolkit](https://redux-toolkit.js.org/)  используется в качестве набора инструментов для эффективной разработки с использованием Redux.
+* [Redux-Saga](https://redux-saga.js.org/) используется для управления асинхронными процессами.
+* [Redux Persist](https://github.com/rt2zz/redux-persist) используется для сохранения состояния.
+* [Reselect](https://github.com/reduxjs/reselect) это библиотека используется для создания мемоизированных селекторов (memoized selectors)
+* [i18n-js](https://github.com/fnando/i18n-js) используется для интенацианализации(i18n).
+* [expo-font](https://docs.expo.io/versions/latest/sdk/font/) позволяет легко загружать шрифты.
+* [Formik](https://github.com/jaredpalmer/formik) используется для создания форм.
+* [Yup](https://github.com/jquense/yup) используется для валидации формы.
 
-## Social / External Logins
+## вход через социальные сети/внешние сервисы
 
-If you want to configure social/external logins for your application, please follow the [Social/External Logins](../Authentication/Social-External-Logins.md) document.
+Если вы хотите настроить для своего приложения вход через социальные сети/внешние сервисы, следуйте инструкциям в документе [Social/External Logins](../Authentication/Social-External-Logins.md). 
 
-## What's Next?
+## Что дальше?
 
-- [The getting started document](../Getting-Started.md) explains how to create a new application in a few minutes.
-- [The application development tutorial](../Tutorials/Part-1.md) explains step by step application development.
+- [The getting started document](../Getting-Started.md) как создать новое приложение за несколько минут.
+- [The application development tutorial](../Tutorials/Part-1.md) пошаговая разработка приложения. 
